@@ -11,15 +11,25 @@ import { createMemoryQD, queryMemoryQD } from "../db/qd.vector.db.js";
 import { convertToVector } from "../services/vector.service.js";
 import { v4 as uuidv4 } from "uuid";
 const initSocketServer = (httpServer) => {
+  // const io = new Server(httpServer, {
+  //   cors: {
+  //     origin: "http://localhost:5173",
+  //     methods: ["*"],
+  //     credentials: true,
+  //   },
+  // });
+
   const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5173",
-      methods: ["*"],
+      origin: [
+        "http://localhost:5173",
+        "https://arc-chat-59ixahevz-mdsaifu7s-projects.vercel.app",
+      ],
+      methods: ["GET", "POST"],
       credentials: true,
     },
   });
-
-  io.use(async (socket, next) => {
+  https: io.use(async (socket, next) => {
     const cookies = cookie.parse(socket.handshake.headers.cookie || "");
 
     if (!cookies.token) {
