@@ -8,7 +8,7 @@ const chatSchema = new mongoose.Schema(
       required: true,
     },
 
-    title: { type: String, requied: true },
+    title: { type: String, required: true },
     lastActivity: {
       type: Date,
       default: Date.now,
