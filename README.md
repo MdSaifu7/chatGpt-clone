@@ -141,8 +141,8 @@ Each user message goes through a two-layer memory pipeline:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/arcchat.git
-cd arcchat
+git clone https://github.com/MdSaifu7/arcchat.git
+cd arcChat
 ```
 
 ### 2. Set up the backend
