@@ -14,7 +14,7 @@ export default function App() {
 
     const { status } = await loginUser({ email, password });
     if (status) {
-      fetchUser(); // Refresh user info
+      await fetchUser(); // Refresh user info
       navigate("/");
     } else {
       alert("Login failed. Please check your credentials and try again.");
