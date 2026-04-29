@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../actions/userActions";
+import { useAuth } from "../context/AuthContext";
 export default function App() {
   const navigate = useNavigate();
+  const { fetchUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ email, password });
-    await loginUser({ email, password });
-    navigate("/");
+
+    const { status } = await loginUser({ email, password });
+    if (status) {
+      fetchUser(); // Refresh user info
+      navigate("/");
+    } else {
+      alert("Login failed. Please check your credentials and try again.");
+    }
   };
 
   return (

@@ -17,10 +17,11 @@ async function loginUser(credentials) {
     const response = await axios.post("/api/auth/login", credentials);
     console.log(response.data);
 
-    return response.data;
+    return { status: response.data.loggedIn };
   } catch (error) {
     console.error("Login failed:", error);
-    throw error;
+
+    return { status: false };
   }
 }
 
@@ -28,6 +29,20 @@ async function createChat(title) {
   try {
     const response = await axios.post("/api/chat", { title });
     return response.data.chat;
+  } catch (error) {
+    console.error("Chat creation failed:", error);
+    throw error;
+  }
+}
+
+async function createTitle(content) {
+  try {
+    const response = await axios.post("/api/chat/create-title", { content });
+    console.log("Create title hit");
+
+    console.log(response.data);
+
+    return response.data.title;
   } catch (error) {
     console.error("Chat creation failed:", error);
     throw error;
@@ -58,7 +73,6 @@ async function getChat() {
 
 async function deleteChat(chatId) {
   try {
-    // const response =
     await axios.post("/api/chat/delete", { chatId });
     // return response.data.chat;
   } catch (error) {
@@ -67,4 +81,12 @@ async function deleteChat(chatId) {
   }
 }
 
-export { registerUser, loginUser, createChat, deleteChat, getMessage, getChat };
+export {
+  registerUser,
+  loginUser,
+  createChat,
+  deleteChat,
+  getMessage,
+  getChat,
+  createTitle,
+};

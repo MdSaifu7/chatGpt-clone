@@ -48,11 +48,14 @@ async function registerUser(req, res) {
 }
 
 async function loginUser(req, res) {
+  console.log("Login route hitt");
+
   const { username = "", email = "", password } = req.body;
   try {
     const user = await userModel.findOne({
       $or: [{ username }, { email }],
     });
+    console.log(user);
 
     if (!user) {
       return res.status(400).json({
@@ -61,6 +64,7 @@ async function loginUser(req, res) {
     }
 
     const isValidPass = await bcrypt.compare(password, user.password);
+    console.log("Password valid: ", isValidPass);
     if (!isValidPass) {
       return res.status(400).json({
         message: "Invalid credentials",
@@ -74,6 +78,7 @@ async function loginUser(req, res) {
 
     return res.status(201).json({
       message: "User login successfully",
+      loggedIn: true,
       user: {
         username: user.username,
         email: user.email,
@@ -82,7 +87,42 @@ async function loginUser(req, res) {
     });
   } catch (err) {
     console.log(err);
+    return res.status(500).send({
+      message: "Error in login route",
+      loggedIn: false,
+      error: err.message,
+    });
   }
 }
 
-export { registerUser, loginUser };
+async function loginStatus(req, res) {
+  const token = req.cookies.token;
+  try {
+    if (!token) {
+      return res.status(401).json({
+        loggedIn: false,
+      });
+    }
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await userModel.findById(decode.id);
+    if (!user) {
+      return res.status(401).json({
+        loggedIn: false,
+      });
+    }
+    return res.status(200).json({
+      loggedIn: true,
+      user: {
+        username: user.username,
+        email: user.email,
+        id: user._id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      loggedIn: false,
+    });
+  }
+}
+export { registerUser, loginUser, loginStatus };

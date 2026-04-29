@@ -6,6 +6,7 @@ import {
   getMessage,
   getChat,
   deleteChat,
+  createTitle,
 } from "../actions/userActions";
 
 // import { deleteChat } from "../actions/userActions";
@@ -206,12 +207,15 @@ export default function Home() {
     if (!input.trim()) return;
     let chatId = activeId;
     if (!chatId) {
-      const userTitle = prompt("Enter chat title");
-      if (!userTitle) return;
-      setTitle(userTitle);
-      const dbChat = await createChat(userTitle);
+      // const userTitle = prompt("Enter chat title");
+      // if (!userTitle) return;
+      const generatedTitle = await createTitle(input);
+      console.log(generatedTitle);
+
+      setTitle(generatedTitle);
+      const dbChat = await createChat(generatedTitle);
       setConversations((prev) => [
-        { id: dbChat._id, title: userTitle },
+        { id: dbChat._id, title: generatedTitle },
         ...prev,
       ]);
       setActiveId(dbChat._id);
@@ -237,15 +241,8 @@ export default function Home() {
   };
 
   const newChat = async () => {
-    const userTitle = prompt("Enter chat title");
-
-    if (!userTitle) return;
-    setTitle(userTitle);
-    const dbChat = await createChat(userTitle);
-
-    setConversations((prev) => [{ id: dbChat._id, title: userTitle }, ...prev]);
-
-    setActiveId(dbChat._id);
+    setTitle("");
+    setActiveId(null);
     setMessages([]);
     setSidebarOpen(false);
   };
@@ -253,7 +250,7 @@ export default function Home() {
   const handleChatClick = async (id) => {
     setActiveId(id);
     const chats = await getMessage(id);
-
+    setTitle(conversations.find((c) => c.id === id)?.title || "New chat");
     setMessages([...chats]);
     setSidebarOpen(false);
   };
@@ -268,8 +265,8 @@ export default function Home() {
     if (activeId === id) setActiveId(null);
   };
 
-  const activeTitle =
-    conversations.find((c) => c.id === activeId)?.title ?? "New Chat";
+  const activeTitle = title ? title : "New chat";
+  // conversations.find((c) => c.id === activeId)?.title ?? "New Chat";
 
   return (
     <div

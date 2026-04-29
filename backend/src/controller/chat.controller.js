@@ -1,10 +1,9 @@
 import chatModel from "../models/chat.model.js";
 // import { generateTitle } from "../services/groq.ai.service.js";
+import { generateTitle } from "../services/openai.service.js";
 import messageModel from "../models/message.model.js";
 async function createChat(req, res) {
   const { title } = req.body;
-  console.log(req.body);
-  console.log("Title received in controller: ", title);
 
   try {
     if (!title) {
@@ -30,11 +29,24 @@ async function createChat(req, res) {
   }
 }
 
-// async function createTitle(req, res) {
-//   const { content } = req.body;
-//   const title = await generateTitle(content);
-//   return title;
-// }
+async function createTitle(req, res) {
+  const { content } = req.body;
+  try {
+    const title = await generateTitle(content);
+    console.log(title);
+
+    return res.status(201).json({
+      message: "Title created",
+      title,
+    });
+  } catch (err) {
+    console.log("Error in create title route", err);
+    res.status(500).send({
+      message: "Error in create title route",
+      error: err.message,
+    });
+  }
+}
 
 async function deleteChat(req, res) {
   const { chatId } = req.body;
@@ -95,4 +107,4 @@ async function getChat(req, res) {
   });
 }
 
-export { createChat, deleteChat, getMessage, getChat };
+export { createChat, deleteChat, getMessage, getChat, createTitle };

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import cookie from "cookie";
 import userModel from "../models/user.model.js";
 import chatModel from "../models/chat.model.js";
-import { generateResponse } from "../services/ai.service.js";
+// import { generateResponse } from "../services/ai.service.js";
 import { generateGroqResponse } from "../services/groq.ai.service.js";
 import messageModel from "../models/message.model.js";
 
@@ -15,7 +15,7 @@ const initSocketServer = (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
       origin: "http://localhost:5173",
-      methods: ["GET", "POST"],
+      methods: ["*"],
       credentials: true,
     },
   });

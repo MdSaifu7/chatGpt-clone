@@ -49,4 +49,51 @@ async function generateGroqResponse(messages) {
   return res.choices[0]?.message?.content || "";
 }
 
+function cleanTitle(text) {
+  if (!text) return "";
+
+  return text
+    .trim()
+    .split(/\s+/) // split words
+    .slice(0, 2) // keep max 2 words
+    .join(" ");
+}
+// async function generateTitle(content) {
+//   try {
+//     const res = await groq.chat.completions.create({
+//       model: "openai/gpt-oss-20b",
+//       temperature: 0.2, // slight flexibility helps
+//       max_tokens: 20,
+//       messages: [
+//         {
+//           role: "system",
+//           content:
+//             "Based on the input of user, generate a very short title (max 2 words). Return only the title.",
+//         },
+//         {
+//           role: "user",
+//           content: content || "Generate a simple title",
+//         },
+//       ],
+//     });
+
+//     console.log("RAW:", res);
+
+//     let raw = res?.choices?.[0]?.message?.content || "";
+//     let title = cleanTitle(raw);
+
+//     // 🔁 Retry once if empty
+//     if (!title) {
+//       console.log("Retrying title generation...");
+//       return await generateTitleFallback(content);
+//     }
+//     console.log(res?.choices?.[0]?.message);
+
+//     return title;
+//   } catch (err) {
+//     console.error(err);
+//     return "Untitled";
+//   }
+// }
+
 export { generateGroqResponse };
