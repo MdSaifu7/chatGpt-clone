@@ -7,7 +7,6 @@ import chatModel from "../models/chat.model.js";
 import { generateGroqResponse } from "../services/groq.ai.service.js";
 import messageModel from "../models/message.model.js";
 
-import { createMemory, queryMemory } from "../db/vector.db.js";
 import { createMemoryQD, queryMemoryQD } from "../db/qd.vector.db.js";
 import { convertToVector } from "../services/vector.service.js";
 import { v4 as uuidv4 } from "uuid";
