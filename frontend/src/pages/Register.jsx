@@ -16,10 +16,9 @@ export default function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
 
     await registerUser(form);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
