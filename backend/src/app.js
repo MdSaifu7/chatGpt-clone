@@ -12,6 +12,7 @@ app.use(
     origin: (origin, callback) => {
       const allowed = [
         "http://localhost:5173",
+        "https://arc-chat-rust.vercel.app",
         /^https:\/\/.*\.vercel\.app$/, // ✅ allows ALL vercel preview URLs
       ];
       if (
