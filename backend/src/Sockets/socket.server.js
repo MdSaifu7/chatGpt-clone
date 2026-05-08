@@ -23,8 +23,8 @@ const initSocketServer = (httpServer) => {
     cors: {
       origin: [
         "http://localhost:5173",
-
-        "https://arc-chat-ks6fw8hef-mdsaifu7s-projects.vercel.app",
+        "https://arc-chat-rust.vercel.app",
+        /^https:\/\/.*\.vercel\.app$/, // ✅ allows ALL vercel preview URLs
       ],
       methods: ["GET", "POST"],
       credentials: true,
